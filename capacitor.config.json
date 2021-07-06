@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "esaraIonic",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}

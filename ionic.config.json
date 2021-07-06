@@ -1,0 +1,7 @@
+{
+  "name": "esaraIonic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
