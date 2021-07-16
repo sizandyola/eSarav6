@@ -11,8 +11,5 @@
 		"splashImmersive": false,
 		"backgroundColor": "#1C3461",
 		"androidSplashResourceName": "splash"
-	},
-	"server": {
-		"url": "http://192.168.0.110:8100"
 	}
 }
