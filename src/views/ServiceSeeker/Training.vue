@@ -8,7 +8,7 @@
     <ion-content :fullscreen="true">
       <div class="ion-padding">
         <h4>Introduction</h4>
-        <p>Interscaff Safety Training Solution Pvt. Ltd. is an international standar various globally recognized trainings provider affiliated with international certification bodies and CTEVT. It is one of the pioneer institutes led by a group of highly experienced, skilled, qualified and competent professionals. <br/><br/> The institute is appropriately customized for the ambitios candidates to be discipline according to the global standard. INTERSCAFF training facility provides wide range courses for aspirants who wants to be trained and certified in international standards.
+        <p>Interscaff Safety Training Solution Pvt. Ltd. is an international standar various globally recognized trainings provider affiliated with international certification bodies and CTEVT. It is one of the pioneer institutes led by a group of highly experienced, skilled, qualified and competent professionals. <br/><br/> The institute is appropriately customized for the ambitios candidates to be discipline according to the global standard. INTERSCAFF training facility provides wide range courses for aspirants who want to be trained and certified in international standards.
         </p>
 
         <div class="" style="background:#f69d1d; color:#fff; padding: 10px">
