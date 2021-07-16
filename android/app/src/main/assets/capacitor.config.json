@@ -1,0 +1,18 @@
+{
+	"appId": "com.esara.app",
+	"appName": "eSara",
+	"webDir": "dist",
+	"bundledWebRuntime": false,
+	"SplashScreen": {
+		"launchShowDuration": 5000,
+		"launchAutoHide": false,
+		"androidScaleType": "CENTER_INSIDE",
+		"splashFullScreen": false,
+		"splashImmersive": false,
+		"backgroundColor": "#1C3461",
+		"androidSplashResourceName": "splash"
+	},
+	"server": {
+		"url": "http://192.168.0.110:8100"
+	}
+}

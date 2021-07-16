@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router';
 
 import { IonicVue } from '@ionic/vue';
+import Vue from "vue"
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -23,10 +24,35 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+import './../public/assets/css/tailwind.css';
+import './../public/assets/css/styles.css';
+
+// Api Controller
+
+
+/* @ts-ignore */
+import interceptor from "./api/interceptor.js";
+interceptor();
+
+
+import mitt from 'mitt';
+const emitter = mitt();
+
+
 const app = createApp(App)
   .use(IonicVue)
   .use(router);
+
+app.config.globalProperties.emitter = emitter;
   
 router.isReady().then(() => {
   app.mount('#app');
 });
+
+
+/* @ts-ignore */
+import lineClamp from 'vue-line-clamp';
+app.use(lineClamp, {
+  // plugin options
+})
+
