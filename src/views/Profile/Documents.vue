@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar color="primary">
-         <ion-buttons slot="start">
+        <ion-buttons slot="start">
           <ion-back-button @click="goBack"></ion-back-button>
         </ion-buttons>
         <ion-title>Documents</ion-title>
@@ -69,11 +69,19 @@
               <ion-input type="file" @change="onFileChange($event)"></ion-input>
             </ion-item>
 
-            <ion-button @click="upload()" expand="block" v-if="!submitting">Upload</ion-button>
+            <ion-button @click="upload()" expand="block" v-if="!submitting"
+              >Upload</ion-button
+            >
 
-              <ion-button color="primary" expand="full" class="mt-4" disabled v-if="submitting"
-            >  <ion-spinner name="crescent" color="light"></ion-spinner></ion-button
-          >
+            <ion-button
+              color="primary"
+              expand="full"
+              class="mt-4"
+              disabled
+              v-if="submitting"
+            >
+              <ion-spinner name="crescent" color="light"></ion-spinner
+            ></ion-button>
           </div>
         </div>
       </div>
@@ -95,7 +103,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonInput,
-  toastController
+  toastController,
 } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
 import Modal from "./UploadModal.vue";
@@ -121,7 +129,7 @@ export default {
     IonSelect,
     IonSelectOption,
     IonInput,
-    toastController
+    toastController,
   },
   data() {
     return {
@@ -130,8 +138,8 @@ export default {
       modalOpen: false,
       documentTypes: ["Citizenship", "CV", "Passport", "Education"],
       selectedType: "",
-      currentUser : {},
-      file: null
+      currentUser: {},
+      file: null,
     };
   },
 
@@ -146,64 +154,69 @@ export default {
     setOpen() {
       this.modalOpen = true;
     },
-    onFileChange(ev){
-        this.file = ev.target.files[0];
-       
+    onFileChange(ev) {
+      this.file = ev.target.files[0];
     },
-    upload(){
-      if(this.selectedType && this.file){
-           let formData = new FormData();
-        formData.append("image",this.file),
-        formData.append("title",this.selectedType);
-        formData.append("user_id", this.currentUser.id );
-        this.submitting = true;
-        TasksApi.uploadDocuments(formData).then(data=>{
-            console.log(data.data);
-              this.openToast("Upload Successful", 'success');
+    upload() {
+      if (this.file.size > 5242880) {
+        // Limit is 5 mb
+        this.openToast(
+          "File Too Large. Please upload documents with fileszie < 5mb"
+        );
+      } else {
+        if (this.selectedType && this.file) {
+          let formData = new FormData();
+          formData.append("image", this.file),
+            formData.append("title", this.selectedType);
+          formData.append("user_id", this.currentUser.id);
+          this.submitting = true;
+          TasksApi.uploadDocuments(formData)
+            .then((data) => {
+              console.log(data.data);
+              this.openToast("Upload Successful", "success");
               this.submitting = false;
               this.selectedType = "";
               this.file = null;
-        }).catch(error=>{
-            console.log(error);
-            this.openToast("Upload Failed", 'success');
-            this.submitting = false;
-        })
-      }else{
-        this.openToast("Please choose document type");
+            })
+            .catch((error) => {
+              console.log(error);
+              this.openToast("Upload Failed", "success");
+              this.submitting = false;
+            });
+        } else {
+          this.openToast("Please choose document type");
+        }
       }
-      
     },
 
     loadDocuments() {
       TasksApi.getUserDocuments()
         .then((data) => {
           this.documents = data.data.data;
-        
+
           this.loadDocuments();
         })
         .catch((error) => {
-          
           console.log(error);
         });
     },
-      goBack(){
+    goBack() {
       this.$router.go(-1);
     },
-      async openToast(value,color) {
-      const toast = await toastController
-        .create({
-          message: value,
-          duration: 3000,
-          position: 'top',
-          color: color?color:'danger'
-        })
+    async openToast(value, color) {
+      const toast = await toastController.create({
+        message: value,
+        duration: 3000,
+        position: "top",
+        color: color ? color : "danger",
+      });
       return toast.present();
     },
   },
 
   async mounted() {
     this.loadDocuments();
-    let response = await this.localStorage.get('esaraUser');
+    let response = await this.localStorage.get("esaraUser");
     this.currentUser = response.profile;
   },
 };

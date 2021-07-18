@@ -158,16 +158,16 @@
            <div class="input-error" v-if="$v.value.user.email.required.$invalid && $v.value.user.email.$dirty">Email is required</div>
            <div class="input-error" v-if="$v.value.user.email.email.$invalid && $v.value.user.email.$dirty">Please Enter A Valid Email</div>
         
-          <ion-item>
+          <ion-item v-if="user.is_worker==0">
             <ion-label>Gender</ion-label>
-            <ion-select interface="popover" v-model="$v.value.user.gender.$model">
+            <ion-select interface="popover" v-model="user.gender">
               <ion-select-option value="male">Male</ion-select-option>
               <ion-select-option value="female">Female</ion-select-option>
             </ion-select>
           </ion-item>
-          <div class="input-error" v-if="$v.value.user.gender.required.$invalid && $v.value.user.gender.$dirty">Field is required</div>
+          
 
-          <ion-item>
+          <ion-item v-if="user.is_worker==1">
             <ion-label>Primary Service</ion-label>
             <ion-select interface="popover" v-model="user.primary_service_id">
               <ion-select-option v-for="item in services" :value="item.id">{{
@@ -176,13 +176,13 @@
             </ion-select>
           </ion-item>
 
-          <ion-item>
+          <ion-item v-if="user.is_worker==1">
             <ion-label position="floating">Pan Number</ion-label>
             <ion-input v-model="user.phone" type="tel"></ion-input>
           </ion-item>
-          <ion-item>
+          <ion-item v-if="user.is_worker==0">
             <ion-label position="floating">Date Of Birth</ion-label>
-            <ion-input v-model="$v.value.user.dob.$model" type="date"></ion-input>
+            <ion-input v-model="user.dob" type="date" min="1900-01" max="2003-05-01" ></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Password</ion-label>
@@ -292,9 +292,7 @@ export default {
         code: {required},
         address:{required},
         email: {required,email},
-        gender: {required},
-        dob: {required},
-        password: {required, minLength:minLength(6)}
+        password: {required, minLength:minLength(8)}
       }
     }
   },
@@ -302,6 +300,7 @@ export default {
     changeWorker(val) {
       this.user.is_worker = val;
     },
+  
 
     stepOne(){
       this.step = 1;
@@ -424,7 +423,8 @@ export default {
         .then((data) => {
           this.creatingAccount = false;
           if (data.data.status) {
-            this.openToast("Account Created","success")
+            this.openToast("Account Created","success");
+            this.$router.push({path:'/'});
           } else {
            
           }

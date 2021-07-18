@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="app_name">esaraIonic</string>
-  <string name="title_activity_main">esaraIonic</string>
+  <string name="app_name">eSara</string>
+  <string name="title_activity_main">eSara</string>
   <string name="package_name">com.esara.app</string>
   <string name="custom_url_scheme">com.esara.app</string>
   <string name="ionic_app_id">01f1ba58</string>

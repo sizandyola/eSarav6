@@ -3,13 +3,13 @@
 	"appName": "eSara",
 	"webDir": "dist",
 	"bundledWebRuntime": false,
-	"SplashScreen": {
-		"launchShowDuration": 5000,
-		"launchAutoHide": false,
-		"androidScaleType": "CENTER_INSIDE",
-		"splashFullScreen": false,
-		"splashImmersive": false,
-		"backgroundColor": "#1C3461",
-		"androidSplashResourceName": "splash"
+	"plugins": {
+		"SplashScreen": {
+			"launchAutoHide": false,
+			"androidScaleType": "CENTER_CROP",
+			"showSpinner": true,
+			"splashFullScreen": false,
+			"splashImmersive": false
+		}
 	}
 }
