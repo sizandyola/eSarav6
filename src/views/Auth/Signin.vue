@@ -176,7 +176,7 @@ export default {
       this.$router.push({path:"/forgot-password"});
     },
     goBack(){
-      this.$router.push({path:'/account-screen'});
+      this.$router.replace({path:'/account-screen'});
     }
   },
   async mounted() {},

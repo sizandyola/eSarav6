@@ -1,6 +1,6 @@
 <template>
     <ion-app>
-    <ion-content fullscreen class="ion-padding" scroll-y="false">
+    <ion-content fullscreen  scroll-y="false">
       <ion-slides>
 
         <ion-slide>
@@ -24,7 +24,7 @@
         </ion-slide>
 
         <ion-slide>
-          <img src="/assets/images/logo.png"/>
+          <img src="/assets/images/logo.png" style="width: 150px"/>
           <h2>इसारा कफी छ।</h2>
           <ion-button fill="clear" @click="test">Continue </ion-button>
         </ion-slide>
@@ -58,10 +58,12 @@ export default  {
 <style scoped>
  ion-slides {
       height: 100%;
+      background-image: linear-gradient(to right, #d5f7e2, #e8fad6, #f0fcd1);
     }
 
     .swiper-slide {
       display: block;
+      margin-top: 100px;
     }
 
     .swiper-slide h2 {
@@ -69,8 +71,8 @@ export default  {
     }
 
     .swiper-slide img {
-      max-height: 50%;
-      max-width: 80%;
+      height: 150px;
+      max-width: 100%;
       margin: 60px 0 40px;
       pointer-events: none;
     }

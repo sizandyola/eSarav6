@@ -135,6 +135,17 @@
             Complete Registration
           </h2>
           <form>
+
+             <ion-item>
+            <ion-label position="floating">Fullname</ion-label>
+            <ion-input
+              v-model="$v.value.user.fullname.$model"
+              type="text"
+             
+            ></ion-input>
+              
+          </ion-item>
+            <div class="input-error" v-if="$v.value.user.fullname.required.$invalid && $v.value.user.fullname.$dirty">Fullname is required</div>
             
           <ion-item>
             <ion-label position="floating">Address</ion-label>
@@ -268,7 +279,7 @@ export default {
 
       user: {
         address: "",
-        fullname: " ",
+        fullname: "",
         email: "",
         phone: "",
         dob: "",
@@ -288,6 +299,7 @@ export default {
    validations() {
     return {
       user:{
+         fullname: {required},
         phone: {required, minLength: minLength(10)},
         code: {required},
         address:{required},
@@ -437,7 +449,7 @@ export default {
         });
   },
      goBack(){
-      this.$router.push({path:'/account-screen'});
+      this.$router.replace({path:'/account-screen'});
     }
 
  
