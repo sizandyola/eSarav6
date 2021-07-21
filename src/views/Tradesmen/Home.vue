@@ -90,6 +90,8 @@ methods:{
   mounted(){
     this.getTraining();
 
+  
+
   }
 }
 </script>

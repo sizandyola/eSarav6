@@ -232,4 +232,15 @@ td {
   padding: 5px;
   color: #fff;
 }
+
+.card-image{
+  height: 150px;
+
+}
+
+.card-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 </style>

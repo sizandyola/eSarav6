@@ -9,6 +9,7 @@ let localStorage = new Storage()
 localStorage.create();
 
 const BaseUrl = config.BaseUrl + "/api/app/";
+const TmpUrl = config.BaseUrl + "/api/";
 const apiClient = axios.create({
     timeout: 15000,
     timeout: 10000,
@@ -225,8 +226,8 @@ function editNotification(id) {
     })
 }
 
-function uploadImage() {
-    return apiClient.post(BaseUrl + "upload", data, {
+function uploadImage(data) {
+    return apiClient.post(TmpUrl + "upload", data, {
         headers: {
 
         }

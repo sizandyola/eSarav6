@@ -11,12 +11,18 @@
           <div class="d-flex">
             <div class="">
               <ion-avatar>
-                <img src="/assets/images/male.jpg" />
+                <img :src="'https://storage.googleapis.com/esaragcm.appspot.com/uploads/'+currentUser.profile_url" v-if="currentUser.profile_url"/>
+                <img src="/assets/images/male.jpg" v-else/>
+                
               </ion-avatar>
             </div>
             <div class="ms-3">
               <h4 class="title">{{ currentUser.fullname }}</h4>
               <p class="mb-1 caption">{{ currentUser.email }}</p>
+
+                   <input type="file" @change="onFileChange($event)" hidden ref="inputFile">
+               <button class="mb-1 caption" @click="changePicture" style="cursor:pointer" v-if="!changing" >Change Profile Picture </button>
+                  <ion-spinner name="crescent" color="dark" v-if="changing"></ion-spinner>
             </div>
           </div>
         </div>
@@ -133,9 +139,52 @@ export default {
     return {
       currentUser: {},
       submitting: false,
+      changing: false,
+      file: null,
     };
   },
   methods: {
+     changePicture(){
+       console.log("Clicked");
+      console.log("REFS",JSON.stringify(this.$refs.inputFile.click()));
+    },
+    onFileChange(ev){
+        this.file = ev.target.files[0];
+         if (this.file.size > 5242880) {
+        // Limit is 5 mb
+        this.openToast(
+          "File Too Large. Please upload documents with fileszie < 5mb"
+        );
+      } else {
+        if (this.file) {
+          this.changing = true;
+          let formData = new FormData();
+          formData.append("image", this.file),
+
+          TasksApi.uploadImage(formData)
+            .then((data) => {
+              this.openToast("Upload Successful", "success");
+              this.file = null;
+              this.currentUser.profile_url = data.data.data;
+              this.submitForm();
+              this.changing = false;
+            })
+            .catch((error) => {
+              console.log(error);
+              this.openToast("Upload Failed", "error");
+              this.changing = false;
+              
+            });
+        } else {
+          this.openToast("Please choose document type");
+        }
+      }
+
+      
+
+
+    
+    },
     submitForm() {
       this.submitting = true;
 
@@ -167,12 +216,15 @@ export default {
       response.profile = newProfile;
       let editProfile = await this.localStorage.set("esaraUser", response);
       this.openToast("Profile Updated", "success");
+       this.emitter.emit("refreshProfile");
       }catch(error){
         this.openToast("Update Failed")
       }
       
     },
-  },
+
+   
+  }, 
 
   async mounted() {
     let response = await this.localStorage.get("esaraUser");

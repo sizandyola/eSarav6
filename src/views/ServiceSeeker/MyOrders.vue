@@ -29,6 +29,7 @@
         
       
       </ion-list>
+      <h4 class="muted-title text-center mt-3 ion-padding" v-if="!loading && orders.length==0">You Have No Orders Yet</h4>
       </ion-content>
   </ion-page>
 </template>

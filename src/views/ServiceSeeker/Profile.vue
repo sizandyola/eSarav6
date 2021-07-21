@@ -9,7 +9,8 @@
             <div class="d-flex">
               <div class="">
                    <ion-avatar>
-    <img src="/assets/images/male.jpg">
+    <img :src="'https://storage.googleapis.com/esaragcm.appspot.com/uploads/'+currentUser.profile_url" v-if="currentUser.profile_url"/>
+                <img src="/assets/images/male.jpg" v-else/>
   </ion-avatar>
               </div>
               <div class="ms-3">
@@ -95,11 +96,20 @@ export default  {
       this.$router.replace({path:"/sign-in"}).then(data=>{
         this.localStorage.clear();
       })
+    },
+    async refreshProfile(){
+       let response = await this.localStorage.get("esaraUser");
+    this.currentUser = response.profile;
     }
   },
   async mounted(){
     let response = await this.localStorage.get("esaraUser");
     this.currentUser = response.profile;
+  },
+  created(){
+        this.emitter.on("refreshProfile", () => {
+      this.refreshProfile();
+    });
   }
 }
 </script>

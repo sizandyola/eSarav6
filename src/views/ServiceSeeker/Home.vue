@@ -89,6 +89,9 @@ methods:{
 
   mounted(){
     this.getServices();
+      TasksApi.getProfile().then(data=>{
+      console.log(data)
+    })
 
   }
 }
