@@ -223,7 +223,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 ion-content {
   --ion-background-color: #f5f5f5;
 }

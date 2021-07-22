@@ -140,6 +140,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'tab4',
         component: () => import('@/views/ServiceSeeker/Profile.vue')
+      },
+      {
+        path: 'tab5',
+        component: () => import('@/views/ServiceSeeker/Financials.vue')
       }
     ]
   },

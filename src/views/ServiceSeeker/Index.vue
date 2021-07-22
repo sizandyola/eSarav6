@@ -12,6 +12,11 @@
           <ion-icon :icon="cubeOutline" />
           <ion-label>My Orders</ion-label>
         </ion-tab-button>
+
+           <ion-tab-button tab="tab5" href="/service-seeker/tab5">
+          <ion-icon :icon="cashOutline" />
+          <ion-label>Financials</ion-label>
+        </ion-tab-button>
         
         <ion-tab-button tab="tab3" href="/service-seeker/tab3">
           <ion-icon :icon="hammerOutline" />
@@ -29,7 +34,7 @@
 
 <script lang="ts">
 import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonIcon, IonPage, IonRouterOutlet } from '@ionic/vue';
-import {  homeOutline, cubeOutline, hammerOutline, personOutline } from 'ionicons/icons';
+import {  homeOutline, cubeOutline, hammerOutline, personOutline, cashOutline  } from 'ionicons/icons';
 
 export default {
   name: 'Tabs',
@@ -40,7 +45,8 @@ export default {
       homeOutline,
       cubeOutline,
       hammerOutline,
-      personOutline
+      personOutline,
+      cashOutline
     }
   }
 }

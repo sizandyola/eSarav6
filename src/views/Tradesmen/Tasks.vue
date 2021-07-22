@@ -24,7 +24,7 @@
           </ion-label>
             <div class="">
               
-              <!-- <ion-badge color="medium">{{order.status}}</ion-badge> -->
+              <ion-badge color="medium">{{order.status}}</ion-badge>
             </div>
         </ion-item>
 

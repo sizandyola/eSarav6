@@ -189,7 +189,7 @@
 
           <ion-item v-if="user.is_worker==1">
             <ion-label position="floating">Pan Number</ion-label>
-            <ion-input v-model="user.phone" type="tel"></ion-input>
+            <ion-input v-model="user.panno" type="tel"></ion-input>
           </ion-item>
           <ion-item v-if="user.is_worker==0">
             <ion-label position="floating">Date Of Birth</ion-label>

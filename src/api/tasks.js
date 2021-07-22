@@ -182,6 +182,11 @@ function getMyOrders() {
     return apiClient.get(BaseUrl + "orders")
 }
 
+function getOrderById(id){
+    return apiClient.get(BaseUrl + "orders/"+id)
+}
+
+
 function bookService(data) {
     return apiClient.post(BaseUrl + "orders", data, {
         headers: {
@@ -270,7 +275,7 @@ function getWorkers(id) {
 
 
 function getInvoice(id) {
-    return apiClient.get(BaseUrl + "order_financials/" + id);
+    return apiClient.get(BaseUrl + "orders/financials/" + id);
 }
 
 function checkIn() {
@@ -297,6 +302,23 @@ function getAttendance() {
     })
 }
 
+function verifyKhaltiPayment(data){
+    return apiClient.post(BaseUrl + "payment/khalti",data ,{
+        headers: {
+
+        }
+    })
+
+}
+
+function getFinancials(){
+    
+    return apiClient.get(BaseUrl + "financials",{
+        headers: {
+
+        }
+    })
+}
 
 
 
@@ -342,6 +364,9 @@ export default {
     postComplaints,
     getComplaints,
 
-    uploadImage
+    uploadImage,
+    verifyKhaltiPayment,
+    getFinancials,
+    getOrderById
 }
 

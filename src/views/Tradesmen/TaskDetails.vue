@@ -12,7 +12,7 @@
       <div class="ion-padding">
         <h2 class="title-1">{{currentItem.title}}</h2>
 
-        <ion-badge color="medium">{{ currentItem.status }}</ion-badge>
+        <ion-badge :color="getColor(currentStatus)">{{ currentStatus }}</ion-badge>
       </div>
 
       <div class="card">
@@ -129,6 +129,7 @@ export default {
   data() {
     return {
       submitting: false,
+      currentStatus: "",
       saving: false,
       updateText: "",
       currentUser: {},
@@ -140,6 +141,17 @@ export default {
   },
   mixins: [localStorage],
   methods: {
+    getColor(val){
+      if(val=="PENDING"){
+        return 'medium'
+      } else if(val=="APPROVED"){
+        return 'success'
+      }else if(val == "REJECTED"){
+        return 'danger'
+      }else {
+        return 'medium'
+      }
+    },
     proceed() {},
     goBack() {
       this.$router.go(-1);
@@ -202,6 +214,13 @@ export default {
           console.log("ORDER DETAILS", error);
         });
     },
+    getOrderSummary(){
+      TasksApi.getOrderById(this.currentItem.order_id).then(data=>{
+          this.currentStatus = data.data.data.status
+      }).catch(error=>{
+        console.log(error);
+      })
+    },
     formatDate(value) {
       if (!value) return "";
       value = moment(value).format("MMM Do YYYY");
@@ -218,6 +237,7 @@ export default {
 
     this.getTaskProgress();
     this.getWorkers();
+    this.getOrderSummary();
     
   },
 };

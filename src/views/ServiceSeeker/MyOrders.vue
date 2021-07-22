@@ -14,7 +14,7 @@
          
           <ion-label>
            <div>
-             <h2 class="title mb-2">{{order.title}}</h2>
+             <h2 class="title mb-2 text-capitalize">{{order.title}}</h2>
             <p class="caption">Ordered Date: {{formatDate(order.dateeng)}} </p>
             <p class="caption">Service Date : {{formatDate(order.service_date)}} </p>
             <p class="caption">Address : {{order.address}}</p>
@@ -23,7 +23,7 @@
           </ion-label>
             <div class="">
               
-              <!-- <ion-badge color="medium">{{order.status}}</ion-badge> -->
+              <ion-badge :color="getColor(order.status)">{{order.status}}</ion-badge>
             </div>
         </ion-item>
         
@@ -68,6 +68,17 @@ export default {
   },
 
   methods:{
+    getColor(val){
+      if(val=="PENDING"){
+        return 'medium'
+      } else if(val=="APPROVED"){
+        return 'success'
+      }else if(val == "REJECTED"){
+        return 'danger'
+      }else {
+        return 'medium'
+      }
+    },
     clickHandler(item){
      
       this.$router.push({name: "orderDetails",params:{item:JSON.stringify(item)}})
