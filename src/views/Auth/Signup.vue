@@ -205,8 +205,18 @@
           </ion-item>
           <div class="input-error" v-if="$v.value.user.password.required.$invalid && $v.value.user.password.$dirty">Field is required</div>
           <div class="input-error" v-if="$v.value.user.password.minLength.$invalid && $v.value.user.password.$dirty">Enter stronger password</div>
-          
-            <ion-button color="success" expand="full" class="mt-4" @click="submitForm" :disabled="$v.value.$invalid" v-if="!creatingAccount"
+
+            <ion-item>
+            <ion-label position="floating">Confirm Password</ion-label>
+            <ion-input
+              v-model="$v.value.user.confirmPassword.$model"
+              type="password"
+              minlength="6"
+            ></ion-input>
+          </ion-item>
+           <div class="input-error" v-if="$v.value.user.confirmPassword.required.$invalid && $v.value.user.confirmPassword.$dirty">Field is required</div>
+            <div class="input-error" v-if="$v.value.user.confirmPassword.sameAs.$invalid && $v.value.user.confirmPassword.$dirty">Password Do Not Match</div>
+          <ion-button color="success" expand="full" class="mt-4" @click="submitForm" :disabled="$v.value.$invalid" v-if="!creatingAccount"
             >Submit</ion-button
           >
               <ion-button color="success" expand="full" class="mt-4" disabled v-if="creatingAccount"
@@ -241,7 +251,7 @@ import {
 import TasksApi from "./../../api/tasks";
 import Auth from "./../../api/auth";
 import useValidate from '@vuelidate/core'
-import { required, email, minLength } from '@vuelidate/validators';
+import { required, email, minLength,sameAs  } from '@vuelidate/validators';
 
 
 export default {
@@ -286,6 +296,7 @@ export default {
         is_company: 0,
         is_worker: 0,
         password: "",
+        confirmPassword: "",
         code: "",
         primary_service_id: null,
 
@@ -304,7 +315,8 @@ export default {
         code: {required},
         address:{required},
         email: {required,email},
-        password: {required, minLength:minLength(8)}
+        password: {required, minLength:minLength(8)},
+        confirmPassword: { required, sameAs: sameAs(this.user.password) }
       }
     }
   },
