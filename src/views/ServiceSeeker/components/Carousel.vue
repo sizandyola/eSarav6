@@ -1,11 +1,14 @@
 <template>
     
-    
-      <ion-slides>
+    <div class="">
+      <div class="loading" v-if="loading">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      </div>
+       <ion-slides v-else>
 
-        <ion-slide>
-          <div class="slide">
-            <img src="/assets/images/promo2.png"/>
+        <ion-slide v-for="img in photos" :key="img.id">
+          <div class="slide" >
+            <img :src="'https://storage.googleapis.com/esaragcm.appspot.com/uploads/'+img.url"/>
           
           </div>
         </ion-slide>
@@ -13,6 +16,9 @@
     
 
       </ion-slides>
+
+    </div>
+     
     
   
 
@@ -20,22 +26,42 @@
 
 
 <script >
-
+import TasksApi from "./../../../api/tasks";
 
 export default  {
   name: 'Tab1',
+  data(){
+    return{
+      photos: [],
+      loading: false,
+    }
+  },
   methods:{
       test(){
           this.$router.push("/account-screen");
       }
-  }
+  },
+  mounted(){
+    this.loading = true;
+    TasksApi.getBanner().then(data=>{
+      
+      this.photos = data.data.data;
+      this.loading = false;
+    }).catch(error=>{
+      console.log(error);
+      this.loading = false;
+    })
+  },
 }
 </script>
 
 
 <style scoped>
+.loading{
+  height: 30vh;
+}
  ion-slides {
-      height: 200px;
+      height: 30vh;
       overflow: hidden;
     }
 

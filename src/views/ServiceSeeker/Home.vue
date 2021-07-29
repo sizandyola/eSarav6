@@ -20,7 +20,7 @@
       </div>
       <ion-grid>
     <ion-row>
-      <ion-col size="6" v-for="(item,index) in services" :key="index" @click="goTo(item)">
+      <ion-col size="6" size-sm v-for="(item,index) in services" :key="index" @click="goTo(item)">
         <ion-card>
           <div class="image-wrapper">
         <img :src="item.image_url" />
