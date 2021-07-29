@@ -5,7 +5,17 @@
         <ion-title>My Orders</ion-title>
       </ion-toolbar>
     </ion-header>
+
+     
     <ion-content :fullscreen="true">
+       <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
+      <ion-refresher-content
+        :pulling-icon="chevronDownCircleOutline"
+        pulling-text="Pull to refresh"
+        refreshing-spinner="circles"
+        refreshing-text="Refreshing...">
+      </ion-refresher-content>
+    </ion-refresher>
       <div class="loading" v-if="loading">
       <ion-spinner name="crescent" color="primary"></ion-spinner>
       </div>
@@ -41,7 +51,9 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-  IonList
+  IonList,
+  IonRefresher,
+  IonRefresherContent
 } from "@ionic/vue";
 import ExploreContainer from "@/components/ExploreContainer.vue";
 import TasksApi from "./../../api/tasks";
@@ -58,7 +70,9 @@ export default {
     IonTitle,
     IonContent,
     IonPage,
-    IonList
+    IonList,
+    IonRefresher,
+  IonRefresherContent
   },
   data(){
     return{
@@ -68,12 +82,12 @@ export default {
   },
 
   methods:{
-    getColor(val){
+  getColor(val){
       if(val=="PENDING"){
         return 'medium'
-      } else if(val=="APPROVED"){
+      } else if(val=="APPROVED" || val=="COMPLETED"){
         return 'success'
-      }else if(val == "REJECTED"){
+      }else if(val == "REJECTED" || val=="CANCELLED"){
         return 'danger'
       }else {
         return 'medium'
@@ -81,7 +95,8 @@ export default {
     },
     clickHandler(item){
      
-      this.$router.push({name: "orderDetails",params:{item:JSON.stringify(item)}})
+      // this.$router.push({name: "orderDetails",params:{item:JSON.stringify(item)}})
+      this.$router.push({path:"/order-details/"+item.id})
     },
     async testClick(){
       let test = await TasksApi.getMyOrders().then(data=>{
@@ -105,6 +120,11 @@ export default {
     }).catch(error=>{
       console.log(error);
     })
+        },
+
+        doRefresh(ev){
+            ev.target.complete();
+            this.getMyOrders();
         }
   },
 

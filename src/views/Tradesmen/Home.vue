@@ -53,6 +53,7 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue
 import ExploreContainer from '@/components/ExploreContainer.vue';
 
 import TasksApi from "./../../api/tasks";
+import localStorage from "./../../mixins/localStorage";
 
 
 export default  {
@@ -64,6 +65,7 @@ export default  {
       services: []
     }
   },
+  mixins:[localStorage],
 
 
 methods:{
@@ -87,8 +89,18 @@ methods:{
     }
 },
 
-  mounted(){
+  async mounted(){
     this.getTraining();
+
+
+     try{
+      let profile = await TasksApi.getProfile();
+      let response = await this.localStorage.get("esaraUser");
+      response.profile = profile.data.data;
+      await this.localStorage.set("esaraUser", response);
+    }catch(error){
+      console.log(error);
+    }
 
   
 

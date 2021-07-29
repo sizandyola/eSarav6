@@ -33,57 +33,57 @@
         <div class="card-body">
           <ion-item>
             <ion-label position="floating">Full Name</ion-label>
-            <ion-input v-model="currentUser.fullname" type="text"></ion-input>
+            <ion-input v-model="$v.value.currentUser.fullname.$model" type="text"></ion-input>
           </ion-item>
+          <div class="input-error" v-if="$v.value.currentUser.fullname.required.$invalid && $v.value.currentUser.fullname.$dirty">Fullname is required</div>
           <ion-item>
             <ion-label position="floating">Address</ion-label>
-            <ion-input v-model="currentUser.address" type="text"></ion-input>
+            <ion-input v-model="$v.value.currentUser.address.$model" type="text"></ion-input>
           </ion-item>
+            <div class="input-error" v-if="$v.value.currentUser.address.required.$invalid && $v.value.currentUser.address.$dirty">Address is required</div>
           <ion-item>
             <ion-label position="floating">Email</ion-label>
-            <ion-input v-model="currentUser.email" type="email"></ion-input>
+            <ion-input v-model="$v.value.currentUser.email.$model" type="email"></ion-input>
           </ion-item>
+            <div class="input-error" v-if="$v.value.currentUser.email.required.$invalid && $v.value.currentUser.email.$dirty">Email is required</div>
+           <div class="input-error" v-if="$v.value.currentUser.email.email.$invalid && $v.value.currentUser.email.$dirty">Please Enter A Valid Email</div>
           <ion-item>
             <ion-label position="floating">Phone</ion-label>
-            <ion-input v-model="currentUser.phone" type="text"></ion-input>
+            <ion-input v-model="$v.value.currentUser.phone.$model" type="text"></ion-input>
           </ion-item>
+          <div class="input-error" v-if="$v.value.currentUser.phone.required.$invalid && $v.value.currentUser.phone.$dirty">Phone is required</div>
           <ion-item>
             <ion-label position="floating">Date of Birth</ion-label>
-            <ion-input v-model="currentUser.dob" type="date"></ion-input>
+            <ion-input v-model="currentUser.dob" type="date" min="1900-01" max="2003-05-01" ></ion-input>
           </ion-item>
 
-          <ion-item>
-            <ion-label position="floating">Qualifications</ion-label>
-            <ion-input
-              v-model="currentUser.qualification"
-              type="text"
-            ></ion-input>
+            <ion-item >
+            <ion-label>Gender</ion-label>
+            <ion-select interface="popover" v-model="currentUser.gender">
+              <ion-select-option value="M">Male</ion-select-option>
+              <ion-select-option value="F">Female</ion-select-option>
+            </ion-select>
           </ion-item>
 
-          <ion-item>
-            <ion-label position="floating">Specialization</ion-label>
-            <ion-input
-              v-model="currentUser.specialization"
-              type="text"
-            ></ion-input>
+            <ion-item>
+            <ion-label position="floating">Pan Number</ion-label>
+            <ion-input v-model="currentUser.panno" type="tel"></ion-input>
           </ion-item>
 
-          <ion-item>
-            <ion-label position="floating">Skills</ion-label>
-            <ion-input v-model="currentUser.skills" type="text"></ion-input>
+             <ion-item>
+            <ion-label position="floating">Bio</ion-label>
+            <ion-input v-model="currentUser.remarks" type="tel"></ion-input>
           </ion-item>
 
-          <ion-item>
-            <ion-label position="floating">Trainings</ion-label>
-            <ion-input v-model="currentUser.trainings" type="text"></ion-input>
-          </ion-item>
-
+      
+          <div class="input-error mt-3" v-if="$v.value.$invalid">Please fill all required fields</div>
           <ion-button
             color="primary"
             expand="full"
             class="mt-4"
             @click="submitForm"
             v-if="!submitting"
+            :disabled="$v.value.$invalid"
             >Save</ion-button
           >
              <ion-button color="primary" expand="full" class="mt-4" disabled v-if="submitting"
@@ -109,11 +109,16 @@ import {
   IonButton,
   IonButtons,
   IonBackButton,
-  toastController
+  toastController,
+  IonSelect
 } from "@ionic/vue";
 import ExploreContainer from "@/components/ExploreContainer.vue";
 import localStorage from "./../../mixins/localStorage";
 import TasksApi from "./../../api/tasks";
+import moment from "moment";
+
+import useValidate from '@vuelidate/core'
+import { required, email, minLength,sameAs  } from '@vuelidate/validators';
 
 export default {
   name: "Tab4",
@@ -131,17 +136,33 @@ export default {
     IonButton,
     IonButtons,
     IonBackButton,
-    toastController
+    toastController,
+    IonSelect
   },
   mixins: [localStorage],
 
   data() {
     return {
-      currentUser: {},
+         v$: useValidate(),
+      currentUser: {
+        
+      },
       submitting: false,
       changing: false,
       file: null,
     };
+  },
+    validations() {
+    return {
+      currentUser:{
+         fullname: {required},
+        phone: {required, minLength: minLength(10)},
+  
+        address:{required},
+        email: {required,email},
+        
+      }
+    }
   },
   methods: {
      changePicture(){
@@ -179,12 +200,13 @@ export default {
           this.openToast("Please choose document type");
         }
       }
-
-      
-
-
-    
     },
+        formatDate(value){
+            if (!value) return ''
+        value = moment(value).format("YYYY-MM-DD");
+        return value;
+    
+          },
     submitForm() {
       this.submitting = true;
 
@@ -225,10 +247,15 @@ export default {
 
    
   }, 
+   created(){
+    this.$v = useValidate();
+    
+  },
 
   async mounted() {
     let response = await this.localStorage.get("esaraUser");
     this.currentUser = response.profile;
+    this.currentUser.dob = this.formatDate(this.currentUser.dob);
   },
    goBack(){
       this.$router.push({path:"/service-seeker/tab4"});

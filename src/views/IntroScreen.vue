@@ -25,7 +25,7 @@
 
         <ion-slide>
           <img src="/assets/images/logo.png" style="width: 150px"/>
-          <h2>इसारा कफी छ।</h2>
+          <h2>इसारा काफी  छ।</h2>
           <ion-button fill="clear" @click="test">Continue </ion-button>
         </ion-slide>
 

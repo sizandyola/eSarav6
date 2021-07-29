@@ -144,14 +144,21 @@ export default {
         let login = await Auth.login(tmpUser);
         this.openToast("Login Successful", "success");
         this.submitting = false;
-        // Seting Notification Token
+      
+        await this.localStorage.set("esaraUser", login.data.data);
+
+          // Seting Notification Token
             FCM.getToken()
         .then((r) => {
-          this.saveToken(r.token);
+          this.saveToken(r.token,login.data.data.profile);
+          
         })
         .catch((err) => console.log(err));
         // ***
-        await this.localStorage.set("esaraUser", login.data.data);
+
+      
+
+        
 
         if (this.loginAs == "0") {
           this.$router.push({ path: "/service-seeker" });
@@ -169,7 +176,19 @@ export default {
         this.openToast(error.response.data);
       }
     },
-    setFCM(){
+    saveToken(token,profile){
+      let details = profile;
+      profile.notification_token = token
+      
+        TasksApi.editProfile(details)
+        .then((data) => {
+          
+          
+        })
+        .catch((error) => {
+          
+          console.log(error);
+        });
 
     },
     forgotPassword(){

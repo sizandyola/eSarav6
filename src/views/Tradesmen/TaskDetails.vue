@@ -5,29 +5,45 @@
         <ion-buttons slot="start">
           <ion-back-button @click="goBack"></ion-back-button>
         </ion-buttons>
-        <ion-title>Task #{{ currentItem.id }}</ion-title>
+        <ion-title>Task #{{ $route.params.id }}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
-      <div class="ion-padding">
-        <h2 class="title-1">{{currentItem.title}}</h2>
+       <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
+        <ion-refresher-content
+          :pulling-icon="chevronDownCircleOutline"
+          pulling-text="Pull to refresh"
+          refreshing-spinner="circles"
+          refreshing-text="Refreshing..."
+        >
+        </ion-refresher-content>
+      </ion-refresher>
 
-        <ion-badge :color="getColor(currentStatus)">{{ currentStatus }}</ion-badge>
+         <div class="loading" v-if="loading">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      </div>
+
+      <div v-if="!loading">
+      <div class="ion-padding">
+        <h2 class="title-1 text-capitalize">{{orderDetails.title}}</h2>
+        <p class="text-capitalize">{{orderDetails.service_title}}</p>
+
+        <ion-badge :color="getColor(orderDetails.status)">{{ orderDetails.status }}</ion-badge>
       </div>
 
       <div class="card">
         <div class="card-body">
           <p>Order Details</p>
           <p class="caption mb-1">
-            Assigned Date: {{ formatDate(currentItem.assigned_date) }}
+            Assigned Date: {{ formatDate(orderDetails.dateeng) }}
           </p>
           <p class="caption mb-1">
-            Service Date : {{ formatDate(currentItem.service_date) }}
+            Service Date : {{ formatDate(orderDetails.service_date) }}
           </p>
-          <p class="caption mb-1">Address : {{ currentItem.address }}</p>
-          <p class="caption mb-1">Address : {{ currentItem.phone }}</p>
+          <p class="caption mb-1">Address : {{ orderDetails.address }}</p>
+          <p class="caption mb-1">Address : {{ orderDetails.phone }}</p>
           <p class="caption mb-1">
-            Admin Remarks : {{ currentItem.status_remarks }}
+            Admin Remarks : {{ orderDetails.status_remarks }}
           </p>
         
         </div>
@@ -90,7 +106,7 @@
         ></ion-button>
             </div>
         </div>
-
+        </div>
      
       </div>
     </ion-content>
@@ -129,7 +145,9 @@ export default {
   data() {
     return {
       submitting: false,
-      currentStatus: "",
+      orderDetails: {},
+      loading: false,
+      
       saving: false,
       updateText: "",
       currentUser: {},
@@ -141,12 +159,12 @@ export default {
   },
   mixins: [localStorage],
   methods: {
-    getColor(val){
+ getColor(val){
       if(val=="PENDING"){
         return 'medium'
-      } else if(val=="APPROVED"){
+      } else if(val=="APPROVED" || val=="COMPLETED"){
         return 'success'
-      }else if(val == "REJECTED"){
+      }else if(val == "REJECTED" || val=="CANCELLED"){
         return 'danger'
       }else {
         return 'medium'
@@ -158,7 +176,7 @@ export default {
     },
     submitComplain() {
       let data = {
-        order_id: this.currentItem.id,
+        order_id: this.$route.params.id,
         user_id: this.currentUser.id,
         remarks: this.complain,
         progress: "Not Seen",
@@ -178,7 +196,7 @@ export default {
     updateTask(){
           this.saving = true;
              let data = {
-                 order_id: this.currentItem.order_id,
+                 order_id: this.$route.params.id,
                  remarks : this.updateText
              }
             TasksApi.postTaskProgress(data).then(data=>{
@@ -194,10 +212,17 @@ export default {
             })
 
     },
+
+     doRefresh(ev) {
+      ev.target.complete();
+      this.getOrderSummary(this.$route.params.id);
+    },
+
+   
  
 
     getWorkers() {
-      TasksApi.getWorkers(this.currentItem.id)
+      TasksApi.getWorkers(this.$route.params.id)
         .then((data) => {
           this.workers = data.data.data;
         })
@@ -206,7 +231,7 @@ export default {
         });
     },
     getTaskProgress() {
-      TasksApi.getTaskProgress(this.currentItem.order_id)
+      TasksApi.getTaskProgress(this.$route.params.id)
         .then((data) => {
           this.taskLogs = data.data.data;
         })
@@ -214,10 +239,13 @@ export default {
           console.log("ORDER DETAILS", error);
         });
     },
-    getOrderSummary(){
-      TasksApi.getOrderById(this.currentItem.order_id).then(data=>{
-          this.currentStatus = data.data.data.status
+    getOrderSummary(id){
+      this.loading = true;
+      TasksApi.getOrderById(id).then(data=>{
+        this.orderDetails = data.data.data;
+          this.loading = false;
       }).catch(error=>{
+        this.loading = false;
         console.log(error);
       })
     },
@@ -235,10 +263,22 @@ export default {
     let response = await this.localStorage.get("esaraUser");
     this.currentUser = response.profile;
 
+      this.getOrderSummary(this.$route.params.id);
     this.getTaskProgress();
     this.getWorkers();
-    this.getOrderSummary();
+ 
     
+  },
+
+
+  created() {
+
+
+    this.emitter.on("refreshApi", () => {
+      this.getOrderSummary(this.$route.params.id);
+    this.getTaskProgress();
+    this.getWorkers();
+    });
   },
 };
 </script>

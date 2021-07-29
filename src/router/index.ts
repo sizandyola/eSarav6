@@ -193,14 +193,14 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: guardMyroute,
   },
   {
-    path: '/order-details',
+    path: '/order-details/:id',
     name: "orderDetails",
     component: () => import('@/views/ServiceSeeker/OrderDetails.vue'),
     props: true,
     beforeEnter: guardMyroute,
   },
   {
-    path: '/task-details',
+    path: '/task-details/:id',
     name: "taskDetails",
     component: () => import('@/views/Tradesmen/TaskDetails.vue'),
     props: true,

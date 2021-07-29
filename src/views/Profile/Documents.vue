@@ -31,9 +31,9 @@
                 <div class="card-body">
                   {{ docs.title }}
 
-                  <p class="caption">
+                  <!-- <p class="caption">
                     Verified : {{ checkVal(docs.is_verified) }}
-                  </p>
+                  </p> -->
                 </div>
               </div>
             </div>
@@ -66,7 +66,9 @@
 
             <ion-item>
               <!-- <ion-label>Choose File</ion-label> -->
+              <form ref="uploadForm">
               <ion-input type="file" @change="onFileChange($event)"></ion-input>
+              </form>
             </ion-item>
 
             <ion-button @click="upload()" expand="block" v-if="!submitting"
@@ -158,7 +160,8 @@ export default {
       this.file = ev.target.files[0];
     },
     upload() {
-      if (this.file.size > 5242880) {
+      if (this.selectedType && this.file) {
+          if (this.file.size > 5242880) {
         // Limit is 5 mb
         this.openToast(
           "File Too Large. Please upload documents with fileszie < 5mb"
@@ -177,16 +180,23 @@ export default {
               this.submitting = false;
               this.selectedType = "";
               this.file = null;
+              this.$refs.uploadForm.reset();
             })
             .catch((error) => {
               console.log(error);
               this.openToast("Upload Failed", "success");
               this.submitting = false;
             });
-        } else {
-          this.openToast("Please choose document type");
-        }
+        } 
       }
+
+      }else{
+        this.openToast("Please choose document and document type");
+      }
+
+
+
+    
     },
 
     loadDocuments() {

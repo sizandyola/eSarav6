@@ -1,34 +1,33 @@
 {
   "project_info": {
-    "project_number": "138663854441",
-    "firebase_url": "https://esara-chat-default-rtdb.firebaseio.com",
-    "project_id": "esara-chat",
-    "storage_bucket": "esara-chat.appspot.com"
+    "project_number": "1081177756024",
+    "project_id": "esaragcm",
+    "storage_bucket": "esaragcm.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:138663854441:android:db95f12c91a7fb200e7df8",
+        "mobilesdk_app_id": "1:1081177756024:android:dc0cbffeca530abcbe388d",
         "android_client_info": {
           "package_name": "com.esara.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "138663854441-csibar8bnbh615rcumk45i6qukj6cd3c.apps.googleusercontent.com",
+          "client_id": "1081177756024-86e2rd2conembih1jgrir667oa2rctbo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAVeq5pZr8SGaZMh1WHJdW5KM_YT92GZQA"
+          "current_key": "AIzaSyCuHJ-O2d1gGz2J0PUTXULFJPJPo6xL2kg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "138663854441-csibar8bnbh615rcumk45i6qukj6cd3c.apps.googleusercontent.com",
+              "client_id": "1081177756024-86e2rd2conembih1jgrir667oa2rctbo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

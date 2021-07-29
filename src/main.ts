@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router';
 
 import { IonicVue } from '@ionic/vue';
-import Vue from "vue"
+import Vue from "vue";
+import { SplashScreen } from '@capacitor/splash-screen';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -47,6 +48,7 @@ app.config.globalProperties.emitter = emitter;
   
 router.isReady().then(() => {
   app.mount('#app');
+  SplashScreen.hide();
 });
 
 
