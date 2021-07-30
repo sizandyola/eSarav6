@@ -369,7 +369,7 @@ export default {
         componentProps: {
           details: {
             orderId: this.$route.params.id,
-            title: this.currentItem.title,
+            title: this.orderDetails.service_title,
             remarks: item.remarks,
           },
         },
