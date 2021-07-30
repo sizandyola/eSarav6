@@ -172,8 +172,8 @@
           <ion-item v-if="user.is_worker==0">
             <ion-label>Gender</ion-label>
             <ion-select interface="popover" v-model="user.gender">
-              <ion-select-option value="male">Male</ion-select-option>
-              <ion-select-option value="female">Female</ion-select-option>
+              <ion-select-option value="M">Male</ion-select-option>
+              <ion-select-option value="F">Female</ion-select-option>
             </ion-select>
           </ion-item>
           
@@ -189,7 +189,7 @@
 
           <ion-item v-if="user.is_worker==1">
             <ion-label position="floating">Pan Number</ion-label>
-            <ion-input v-model="user.panno" type="tel"></ion-input>
+            <ion-input v-model="user.panno" type="number"></ion-input>
           </ion-item>
           <ion-item v-if="user.is_worker==0">
             <ion-label position="floating">Date Of Birth</ion-label>
@@ -439,6 +439,7 @@ export default {
       // } else {
       //   alert('Form failed validation')
       // }
+      
       this.creatingAccount = true;
       
       this.user.token = this.user.code;
@@ -448,7 +449,9 @@ export default {
           this.creatingAccount = false;
           if (data.data.status) {
             this.openToast("Account Created","success");
-            this.$router.push({path:'/'});
+            this.$router.replace({path:'/sign-in'}).catch(error=>{
+              console.log(error);
+            });
           } else {
            
           }

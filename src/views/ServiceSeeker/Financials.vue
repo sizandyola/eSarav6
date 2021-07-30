@@ -13,9 +13,9 @@
       <ion-list v-if="!loading">
 
             <ion-item v-for="fin in financials" :key="fin.id" >
-                <div>
-                    <div class="d-flex justify-content-between">
-                         <p class="mb-1">Order Id : {{fin.id}}</p>
+                <div class="py-3">
+                    <div class="d-flex">
+                         <p class="mb-1 me-5">Order Id : {{fin.order_id}}</p>
                     <p class="mb-1">Mode : {{fin.mode}}</p>
                     </div>
                     <p class="mb-1">Particular : {{fin.particular}}</p>
@@ -95,6 +95,12 @@ export default  {
      let response = await this.localStorage.get('esaraUser');
     this.currentUser = response.profile;
     this.getFinancials();
+  },
+
+  created(){
+     this.emitter.on("refreshApi", () => {
+      this.getFinancials();
+    });
   }
 }
 </script>

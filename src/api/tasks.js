@@ -22,11 +22,11 @@ const apiClient = axios.create({
 // /401 check
 apiClient.interceptors.response.use(function (response) {
     return response
-}, function (error) {
+}, async function (error) {
     console.log("error",error)
     if (error.response.status === 401) {
-
-         router.push('/sign-in')
+         router.replace('/sign-in');
+         await localStorage.clear();
     }
     return Promise.reject(error.response.data)
 })

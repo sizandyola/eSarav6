@@ -284,7 +284,7 @@ export default {
     },
     submitComplain() {
       let data = {
-        order_id: this.currentItem.id,
+        order_id: this.$route.params.id,
         user_id: this.currentUser.id,
         remarks: this.complain,
         progress: "Not Seen",
@@ -302,7 +302,7 @@ export default {
         });
     },
     getComplaints() {
-      TasksApi.getComplaints(this.currentItem.id)
+      TasksApi.getComplaints(this.$route.params.id)
         .then((data) => {
           this.complainList = data.data.data.complaint;
           console.log("COMPLAINTS", JSON.stringify(this.complainList));
@@ -313,7 +313,7 @@ export default {
     },
 
     getWorkers() {
-      TasksApi.getWorkers(this.currentItem.id)
+      TasksApi.getWorkers(this.$route.params.id)
         .then((data) => {
           this.workers = data.data.data;
         })
@@ -322,7 +322,7 @@ export default {
         });
     },
     getTaskProgress() {
-      // this.currentItem.id
+      // this.$route.params.id
       TasksApi.getTaskProgress(93)
         .then((data) => {
           this.taskLogs = data.data.data;
@@ -332,7 +332,7 @@ export default {
         });
     },
     getFinanicals() {
-      TasksApi.getInvoice(this.currentItem.id)
+      TasksApi.getInvoice(this.$route.params.id)
         .then((data) => {
           this.financials = data.data.data;
         })
@@ -368,7 +368,7 @@ export default {
         cssClass: "my-custom-class",
         componentProps: {
           details: {
-            orderId: this.currentItem.id,
+            orderId: this.$route.params.id,
             title: this.currentItem.title,
             remarks: item.remarks,
           },

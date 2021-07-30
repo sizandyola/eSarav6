@@ -219,6 +219,7 @@ export default {
                 this.$router.push("/service-seeker");
                 this.openToast("Your Order has been placed","success");
                 this.submitting = false;
+                this.emitter.emit("refreshApi");
             }).catch(error=>{
               this.submitting = false;
               this.openToast(error);

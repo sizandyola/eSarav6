@@ -177,6 +177,7 @@ export default {
       }
     },
     saveToken(token,profile){
+      
       let details = profile;
       profile.notification_token = token
       

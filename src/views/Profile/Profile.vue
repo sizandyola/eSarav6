@@ -67,12 +67,12 @@
 
             <ion-item>
             <ion-label position="floating">Pan Number</ion-label>
-            <ion-input v-model="currentUser.panno" type="tel"></ion-input>
+            <ion-input v-model="currentUser.panno" type="number"></ion-input>
           </ion-item>
 
              <ion-item>
             <ion-label position="floating">Bio</ion-label>
-            <ion-input v-model="currentUser.remarks" type="tel"></ion-input>
+            <ion-input v-model="currentUser.remarks" type="text"></ion-input>
           </ion-item>
 
       
