@@ -3,13 +3,29 @@
     <ion-header>
       <ion-toolbar color="primary">
         <ion-title>My Trainings</ion-title>
+         <ion-buttons slot="end">
+          <i
+            class="fas fa-redo pe-3"
+            style="font-size: 21px"
+            @click="getTrainingOrders"
+          ></i>
+        </ion-buttons>
       </ion-toolbar>
+      
     </ion-header>
     
      <ion-content :fullscreen="true">
       <div class="loading" v-if="loading">
       <ion-spinner name="crescent" color="primary"></ion-spinner>
       </div>
+           <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
+      <ion-refresher-content
+        :pulling-icon="chevronDownCircleOutline"
+        pulling-text="Pull to refresh"
+        refreshing-spinner="circles"
+        refreshing-text="Refreshing...">
+      </ion-refresher-content>
+    </ion-refresher>
       <ion-list v-if="!loading">
             <ion-item v-for="order in trainingOrders" :key="order.id" @click="clickHandler(order)">
          
@@ -92,12 +108,24 @@ export default  {
           this.loading = false;
             console.log(error);
         })
-          }
+          },
+
+               doRefresh(ev){
+            ev.target.complete();
+            this.getTrainingOrders();
+            // this.getMyOrders();
+        }
   },
   async mounted(){
      let response = await this.localStorage.get('esaraUser');
     this.currentUser = response.profile;
     this.getTrainingOrders();
+  },
+
+    created(){
+      this.emitter.on("refreshApi", () => {
+      this.getTrainingOrders();
+    });
   }
 }
 </script>

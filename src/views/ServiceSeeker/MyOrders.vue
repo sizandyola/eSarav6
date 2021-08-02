@@ -3,6 +3,15 @@
     <ion-header>
       <ion-toolbar color="primary">
         <ion-title>My Orders</ion-title>
+
+
+          <ion-buttons slot="end">
+          <i
+            class="fas fa-redo pe-3"
+            style="font-size: 21px"
+            @click="getMyOrders"
+          ></i>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 

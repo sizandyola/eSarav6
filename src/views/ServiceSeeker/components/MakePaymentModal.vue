@@ -74,6 +74,7 @@ export default {
   },
   props: {
     details: {},
+    modal:{}
   },
   mixins:[localStorage],
   data() {
@@ -85,10 +86,11 @@ export default {
 
   methods: {
     closeModal() {
-      this.emitter.emit("dismissModal");
+      // this.modal.dismiss();
+      this.emitter.emit("dismissPaymentModal");
     },
     async esewaModal() {
-        await Browser.open({ url: `https://beta.esara.com.np/mobile-payment/index.html?token=${this.token}&amount=${this.amount}&orderId=${this.details.orderId}` });
+        await Browser.open({ url: `https://esara.com.np/mobile-payment/index.html?token=${this.token}&amount=${this.amount}&orderId=${this.details.orderId}` });
    
     },
        async openToast(value,color) {

@@ -320,7 +320,13 @@ function getFinancials(){
     })
 }
 
+function sendEnquiry(data){
+    return apiClient.post(BaseUrl + "enquiries",data,{
+        headers: {
 
+        }
+    })
+}
 
 export default {
     checkIn,
@@ -367,6 +373,7 @@ export default {
     uploadImage,
     verifyKhaltiPayment,
     getFinancials,
-    getOrderById
+    getOrderById,
+    sendEnquiry
 }
 

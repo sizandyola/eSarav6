@@ -3,6 +3,14 @@
     <ion-header>
       <ion-toolbar color="primary">
         <ion-title>Financials</ion-title>
+
+         <ion-buttons slot="end">
+          <i
+            class="fas fa-redo pe-3"
+            style="font-size: 21px"
+            @click="getFinancials"
+          ></i>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     
@@ -10,17 +18,29 @@
       <div class="loading" v-if="loading">
       <ion-spinner name="crescent" color="primary"></ion-spinner>
       </div>
+       <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
+      <ion-refresher-content
+        :pulling-icon="chevronDownCircleOutline"
+        pulling-text="Pull to refresh"
+        refreshing-spinner="circles"
+        refreshing-text="Refreshing...">
+      </ion-refresher-content>
+    </ion-refresher>
       <ion-list v-if="!loading">
 
             <ion-item v-for="fin in financials" :key="fin.id" >
-                <div class="py-3">
-                    <div class="d-flex">
-                         <p class="mb-1 me-5">Order Id : {{fin.order_id}}</p>
-                    <p class="mb-1">Mode : {{fin.mode}}</p>
+                <div class="py-3 w-100">
+                    <div class="w-100 d-flex justify-content-between">
+                      <div class="w-75 pe-2" style="border-right: 1px solid #eee">
+                    <p class="mb-1 me-5  caption">Order Id : {{fin.order_id}}</p>
+                    <p class="mb-1 caption">Particular : {{fin.particular}}</p>
+                    <p class="mb-1  caption">Date : {{formatDate(fin.transaction_date)}}</p>
+                    <p class="mb-1  caption">Amount : Rs {{fin.amount}}</p>
                     </div>
-                    <p class="mb-1">Particular : {{fin.particular}}</p>
-                    <p class="mb-1">Date : {{formatDate(fin.transaction_date)}}</p>
-                    <p class="mb-1">Amount : Rs {{fin.amount}}</p>
+                       <div class="d-flex justify-content-center align-items-center">
+                     <p class="mb-1  caption text-center">Payment Mode <br> {{fin.mode}}</p>
+                     </div>
+                     </div>
                 </div>
                 
                 
@@ -40,7 +60,10 @@ import { IonPage,
   IonToolbar,
   IonTitle,
   IonContent,
-  IonList } from '@ionic/vue';
+  IonList,
+   IonRefresher,
+  IonRefresherContent
+   } from '@ionic/vue';
 
 import localStorage from "./../../mixins/localStorage";
 import TasksApi from "./../../api/tasks";
@@ -54,7 +77,9 @@ export default  {
   IonToolbar,
   IonTitle,
   IonContent,
-  IonList },
+  IonList,
+   IonRefresher,
+  IonRefresherContent },
   data(){
     return{
       currentUser: {},
@@ -70,6 +95,11 @@ export default  {
             }else{
                 return "False"
             }
+        },
+
+           doRefresh(ev){
+            ev.target.complete();
+            this.getFinancials();
         },
   
      formatDate(value){

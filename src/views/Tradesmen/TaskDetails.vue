@@ -6,6 +6,14 @@
           <ion-back-button @click="goBack"></ion-back-button>
         </ion-buttons>
         <ion-title>Task #{{ $route.params.id }}</ion-title>
+
+           <ion-buttons slot="end">
+          <i
+            class="fas fa-redo pe-3"
+            style="font-size: 21px"
+            @click="loadAll"
+          ></i>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
@@ -215,7 +223,7 @@ export default {
 
      doRefresh(ev) {
       ev.target.complete();
-      this.getOrderSummary(this.$route.params.id);
+        this.loadAll();
     },
 
    
@@ -254,6 +262,12 @@ export default {
       value = moment(value).format("MMM Do YYYY");
       return value;
     },
+
+    loadAll(){
+         this.getOrderSummary(this.$route.params.id);
+    this.getTaskProgress();
+    this.getWorkers();
+    }
   },
 
   async mounted() {
@@ -263,9 +277,7 @@ export default {
     let response = await this.localStorage.get("esaraUser");
     this.currentUser = response.profile;
 
-      this.getOrderSummary(this.$route.params.id);
-    this.getTaskProgress();
-    this.getWorkers();
+   this.loadAll();
  
     
   },
@@ -275,9 +287,7 @@ export default {
 
 
     this.emitter.on("refreshApi", () => {
-      this.getOrderSummary(this.$route.params.id);
-    this.getTaskProgress();
-    this.getWorkers();
+      this.loadAll();
     });
   },
 };

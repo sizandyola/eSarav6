@@ -6,6 +6,14 @@
           <ion-back-button @click="goBack"></ion-back-button>
         </ion-buttons>
         <ion-title>Order #{{ $route.params.id }}</ion-title>
+
+          <ion-buttons slot="end">
+          <i
+            class="fas fa-redo pe-3"
+            style="font-size: 21px"
+            @click="loadAll"
+          ></i>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
@@ -24,7 +32,8 @@
 
       <div v-if="!loading">
       <div class="ion-padding">
-        <h2 class="title-1">{{ orderDetails.service_title }}</h2>
+         <h2 class="title-1 text-capitalize">{{orderDetails.title}}</h2>
+        <p class="text-capitalize">{{orderDetails.service_title}}</p>
 
         <ion-badge :color="getColor(orderDetails.status)">{{
           orderDetails.status
@@ -360,7 +369,7 @@ export default {
     },
     doRefresh(ev) {
       ev.target.complete();
-      this.getOrderDetails(this.$route.params.id);
+      this.loadAll();
     },
     async paymentModal(item) {
       this.modal = await modalController.create({
@@ -376,6 +385,14 @@ export default {
       });
       return this.modal.present();
     },
+
+    loadAll(){
+        this.getOrderDetails(this.$route.params.id);
+    this.getTaskProgress();
+    this.getWorkers();
+    this.getComplaints();
+    this.getFinanicals();
+    }
   },
 
   async mounted() {
@@ -385,25 +402,18 @@ export default {
     let response = await this.localStorage.get("esaraUser");
     this.currentUser = response.profile;
 
-    this.getOrderDetails(this.$route.params.id);
-    this.getTaskProgress();
-    this.getWorkers();
-    this.getComplaints();
-    this.getFinanicals();
+      this.loadAll();
+  
   },
   created() {
-    this.emitter.on("dismissModal", () => {
+    this.emitter.on("dismissPaymentModal", () => {
       this.modal.dismiss().then(() => {
         this.modal = null;
       });
     });
 
     this.emitter.on("refreshApi", () => {
-      this.getOrderDetails(this.$route.params.id);
-      this.getTaskProgress();
-      this.getWorkers();
-      this.getComplaints();
-      this.getFinanicals();
+    this.loadAll();
     });
   },
 };
